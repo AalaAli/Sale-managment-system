@@ -57,7 +57,11 @@ submit.addEventListener('click', function () {
         category: category.value,
         count: count.value
     }
-    dataPro.push(newPro);
+    for(let i=0; i<newPro.count; i++){
+        dataPro.push(newPro);
+
+    }
+  
     localStorage.setItem("product", JSON.stringify(dataPro));
    clearInputs();
   displayInputs();
@@ -86,7 +90,15 @@ function displayInputs(){
          `
     }
     document.getElementById('tbody').innerHTML=table;
+    let btndelete=document.getElementById('deleteAll');
+    if(dataPro.length>0){
+        btndelete.innerHTML=   ` <button onclick=deleteall()>delete All(${dataPro.length})</button>  `
 
+
+    }
+else{
+    btndelete.innerHTML='';
+}
 }
 displayInputs();
 //delete
@@ -95,4 +107,9 @@ function deletData(i){
     localStorage.product=JSON.stringify(dataPro);
     displayInputs();
 
+}
+function deleteall(){
+    localStorage.clear();
+    dataPro=[];
+    displayInputs();
 }
