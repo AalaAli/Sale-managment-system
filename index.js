@@ -88,3 +88,4 @@ function displayInputs(){
     document.getElementById('tbody').innerHTML=table;
 
 }
+displayInputs();
