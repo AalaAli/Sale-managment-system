@@ -113,6 +113,7 @@ function displayInputs() {
     else {
         btndelete.innerHTML = '';
     }
+    getTotal();
 }
 displayInputs();
 //delete
@@ -139,4 +140,8 @@ function update(i) {
     getTotal();
     globalIndex = i;
     mood = 'update';
+scroll({
+    top:0,
+    behavior:"smooth"
+})
 }
