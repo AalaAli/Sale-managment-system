@@ -7,8 +7,9 @@ let total = document.getElementById('total');
 let count = document.getElementById('count');
 let category = document.getElementById('category')
 let submit = document.getElementById('submit');
-let table=document.getElementById('table');
-
+let table = document.getElementById('table');
+let globalIndex;
+let mood = 'create';
 //get total
 function getTotal() {
     if (price.value != '') {
@@ -26,15 +27,15 @@ function getTotal() {
 
 
 //create 
-function clearInputs(){
-    title.value='';
-    price.value='';
-    taxes.value='';
-    ads.value='';
-    discount.value='';
-    total.innerHTML='';
-    category.value='';
-    count.value='';
+function clearInputs() {
+    title.value = '';
+    price.value = '';
+    taxes.value = '';
+    ads.value = '';
+    discount.value = '';
+    total.innerHTML = '';
+    category.value = '';
+    count.value = '';
 }
 
 let dataPro;
@@ -47,7 +48,7 @@ else {
 }
 submit.addEventListener('click', function () {
 
-   let newPro = {
+    let newPro = {
         title: title.value,
         price: price.value,
         taxes: taxes.value,
@@ -57,23 +58,36 @@ submit.addEventListener('click', function () {
         category: category.value,
         count: count.value
     }
-    for(let i=0; i<newPro.count; i++){
-        dataPro.push(newPro);
-
+    if (mood === 'create') {
+        if (newPro.count > 1) {
+            for (let i = 0; i < newPro.count; i++) {
+                dataPro.push(newPro);
+            }
+        }
+        else {
+            dataPro.push(newPro);
+        }
     }
-  
+
+else{
+    dataPro[globalIndex]=newPro;
+    submit.innerHTML='Create';
+    mood='create';
+    count.style.display='block';
+}
+
     localStorage.setItem("product", JSON.stringify(dataPro));
-   clearInputs();
-  displayInputs();
+    clearInputs();
+    displayInputs();
 })
 //read
-function displayInputs(){
- let table='';
-    for(let i=0; i<dataPro.length; i++){
-         table+=`
+function displayInputs() {
+    let table = '';
+    for (let i = 0; i < dataPro.length; i++) {
+        table += `
          
            <tr>
-                        <td>${i+1}</td>
+                        <td>${i + 1}</td>
                         <td>${dataPro[i].title}</td>
                         <td>${dataPro[i].price}</td>
                         <td>${dataPro[i].taxes}</td>
@@ -81,7 +95,7 @@ function displayInputs(){
                         <td>${dataPro[i].discount}</td>
                         <td>${dataPro[i].total}</td>
                         <td>${dataPro[i].category}</td>
-                        <td><button id="update">update</button></td>
+                        <td><button onclick =update(${i}) id="update">update</button></td>
                         <td><button onclick=deletData(${i}) id="delete">delete</button></td>
 
 
@@ -89,27 +103,40 @@ function displayInputs(){
          
          `
     }
-    document.getElementById('tbody').innerHTML=table;
-    let btndelete=document.getElementById('deleteAll');
-    if(dataPro.length>0){
-        btndelete.innerHTML=   ` <button onclick=deleteall()>delete All(${dataPro.length})</button>  `
+    document.getElementById('tbody').innerHTML = table;
+    let btndelete = document.getElementById('deleteAll');
+    if (dataPro.length > 0) {
+        btndelete.innerHTML = ` <button onclick=deleteall()>delete All(${dataPro.length})</button>  `
 
 
     }
-else{
-    btndelete.innerHTML='';
-}
+    else {
+        btndelete.innerHTML = '';
+    }
 }
 displayInputs();
 //delete
-function deletData(i){
-    dataPro.splice(i,1);
-    localStorage.product=JSON.stringify(dataPro);
+function deletData(i) {
+    dataPro.splice(i, 1);
+    localStorage.product = JSON.stringify(dataPro);
     displayInputs();
 
 }
-function deleteall(){
+function deleteall() {
     localStorage.clear();
-    dataPro=[];
+    dataPro = [];
     displayInputs();
+}//update
+function update(i) {
+    title.value = dataPro[i].title;
+    price.value = dataPro[i].price;
+    taxes.value = dataPro[i].taxes;
+    ads.value = dataPro[i].ads;
+    discount.value = dataPro[i].discount;
+    category.value = dataPro[i].category;
+    submit.innerHTML = 'Update';
+    count.style.display = 'none';
+    getTotal();
+    globalIndex = i;
+    mood = 'update';
 }
