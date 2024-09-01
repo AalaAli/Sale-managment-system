@@ -58,7 +58,9 @@ submit.addEventListener('click', function () {
         category: category.value.toLowerCase(),
         count: count.value
     }
-    if (mood === 'create') {
+    if(title.value !=''&& price.value!='' &&category.value!='')
+    {
+          if (mood === 'create') {
         if (newPro.count > 1) {
             for (let i = 0; i < newPro.count; i++) {
                 dataPro.push(newPro);
@@ -75,9 +77,12 @@ submit.addEventListener('click', function () {
         mood = 'create';
         count.style.display = 'block';
     }
+    clearInputs();
+
+    }
+  
 
     localStorage.setItem("product", JSON.stringify(dataPro));
-    clearInputs();
     displayInputs();
 })
 //read
@@ -180,7 +185,7 @@ function searchData(value) {
     let table = '';
     for (let i = 0; i < dataPro.length; i++) {
 
-        if (searchMood == 'title') {
+        if (searchMood === 'title') {
             if (dataPro[i].title.includes(value.toLowerCase())) {
                 table += `
          
