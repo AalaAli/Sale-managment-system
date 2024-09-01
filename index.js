@@ -58,7 +58,10 @@ submit.addEventListener('click', function () {
         category: category.value.toLowerCase(),
         count: count.value
     }
-    if(title.value !=''&& price.value!='' &&category.value!='')
+    if(title.value !=''&& 
+        price.value!='' &&
+        category.value!=''
+    && count.value<=100)
     {
           if (mood === 'create') {
         if (newPro.count > 1) {
@@ -85,6 +88,9 @@ submit.addEventListener('click', function () {
     localStorage.setItem("product", JSON.stringify(dataPro));
     displayInputs();
 })
+
+
+
 //read
 function displayInputs() {
     let table = '';
@@ -121,6 +127,8 @@ function displayInputs() {
     getTotal();
 }
 displayInputs();
+
+
 //delete
 function deletData(i) {
     dataPro.splice(i, 1);
